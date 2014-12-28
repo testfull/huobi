@@ -1,0 +1,20 @@
+#!/bin/bash
+# Script for getting data from huobi api
+
+echo "Getting data from huobi api ..."
+
+startTime=1388534400
+endTime=1419638400
+timeStep=18000
+
+filename="output.txt"
+echo "Data from $startTime to $endTime step $timeStep." > $filename
+
+t=$startTime
+while [ $t -lt $endTime ]
+do
+	echo "t: "$t >> $filename
+	t=$(( $t + $timeStep))
+done
+
+echo "Done"
