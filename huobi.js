@@ -1,19 +1,19 @@
 // Parse command line arguments
 
-var startTime = 0, endTime = 0;
+// var startTime = 0, endTime = 0;
 
-if (process.argv.length < 4) {
-	console.log('Usage: node <this-file.js> startTime endTime');
-	process.exit(code=-1);
-} else {
-    try {
-        startTime = parseInt(process.argv[2]);
-        endTime = parseInt(process.argv[3]);
-    } catch (e) {
-        console.log('Usage: node <this-file.js> startTime endTime');
-        process.exit(code=-1);
-    }
-}
+// if (process.argv.length < 4) {
+// 	console.log('Usage: node <this-file.js> startTime endTime');
+// 	process.exit(code=-1);
+// } else {
+//     try {
+//         startTime = parseInt(process.argv[2]);
+//         endTime = parseInt(process.argv[3]);
+//     } catch (e) {
+//         console.log('Usage: node <this-file.js> startTime endTime');
+//         process.exit(code=-1);
+//     }
+// }
 
 //
 // 火币实时行情push演示
@@ -97,9 +97,15 @@ exports.connect = function() {
             g_isConnect = 1;
             console.error('websocket client connect to push server:' + socket.socket.sessionid);
 
-            var strMsg = '{"version": 1, "msgType": "reqTimeLine", "symbolId": "btccny", "from": ' + startTime + ', "to": ' + endTime + '}';
-            var json = JSON.parse(strMsg);
-            socket.emit('request', json);
+            var startTime = 1388534400, endTime = 1419638400, timeStep = 18000;
+            for (var time = startTime; time < endTime; time += timeStep) {
+                var strMsg = '{"version": 1, "msgType": "reqTimeLine", "symbolId": "btccny", "from": '
+                            + time + ', "to": '
+                            + (time + timeStep) + '}';
+
+                var json = JSON.parse(strMsg);
+                socket.emit('request', json);
+            }
         });
         
         socket.on('disconnect', function(){
@@ -119,7 +125,7 @@ exports.connect = function() {
         socket.on('request', function(data) {
             console.log(JSON.stringify(data));
             console.log('\n');
-            process.exit(code=0); // quit
+            // process.exit(code=0); // quit
         });
         
     } catch(err) {
